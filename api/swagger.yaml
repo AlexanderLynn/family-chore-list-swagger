@@ -10,322 +10,29 @@ info:
 host: "family-chore-list-herokuapp.com"
 basePath: "/"
 tags:
-- name: "pet"
-  description: "Everything about your Pets"
-  externalDocs:
-    description: "Find out more"
-    url: "http://swagger.io"
-- name: "store"
-  description: "Access to Petstore orders"
-- name: "user"
-  description: "Operations about user"
-  externalDocs:
-    description: "Find out more about our store"
-    url: "http://swagger.io"
+- name: "auth"
+  description: "Access to API Endpoints"
+- name: "todoList"
+  description: "Everything about your Todo Lists"
+- name: "family"
+  description: "Access Family Members"
 schemes:
 - "https"
 - "http"
 paths:
-  /pet:
-    post:
-      tags:
-      - "pet"
-      summary: "Add a new pet to the store"
-      description: ""
-      operationId: "addPet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      responses:
-        "405":
-          description: "Invalid input"
-      x-swagger-router-controller: "Pet"
+  /auth/signup:
     put:
       tags:
-      - "pet"
-      summary: "Update an existing pet"
-      description: ""
-      operationId: "updatePet"
-      consumes:
-      - "application/json"
-      - "application/xml"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Pet object that needs to be added to the store"
-        required: true
-        schema:
-          $ref: "#/definitions/Pet"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      responses:
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-        "405":
-          description: "Validation exception"
-      x-swagger-router-controller: "Pet"
-  /pet/findByStatus:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by status"
-      description: "Multiple status values can be provided with comma separated strings"
-      operationId: "findPetsByStatus"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "status"
-        in: "query"
-        description: "Status values that need to be considered for filter"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-          default: "available"
-          enum:
-          - "available"
-          - "pending"
-          - "sold"
-        collectionFormat: "multi"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        "400":
-          description: "Invalid status value"
-      x-swagger-router-controller: "Pet"
-  /pet/findByTags:
-    get:
-      tags:
-      - "pet"
-      summary: "Finds Pets by tags"
-      description: "Muliple tags can be provided with comma separated strings. Use\
-        \         tag1, tag2, tag3 for testing."
-      operationId: "findPetsByTags"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "tags"
-        in: "query"
-        description: "Tags to filter by"
-        required: true
-        type: "array"
-        items:
-          type: "string"
-        collectionFormat: "multi"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      deprecated: true
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Pet"
-        "400":
-          description: "Invalid tag value"
-      x-swagger-router-controller: "Pet"
-  /pet/{petId}:
-    get:
-      tags:
-      - "pet"
-      summary: "Find pet by ID"
-      description: "Returns a single pet"
-      operationId: "getPetById"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to return"
-        required: true
-        type: "integer"
-        format: "int64"
-      security:
-      - api_key: []
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/Pet"
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-      x-swagger-router-controller: "Pet"
-    post:
-      tags:
-      - "pet"
-      summary: "Updates a pet in the store with form data"
-      description: ""
-      operationId: "updatePetWithForm"
-      consumes:
-      - "application/x-www-form-urlencoded"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet that needs to be updated"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "name"
-        in: "formData"
-        description: "Updated name of the pet"
-        required: false
-        type: "string"
-      - name: "status"
-        in: "formData"
-        description: "Updated status of the pet"
-        required: false
-        type: "string"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      responses:
-        "405":
-          description: "Invalid input"
-      x-swagger-router-controller: "Pet"
-    delete:
-      tags:
-      - "pet"
-      summary: "Deletes a pet"
-      description: ""
-      operationId: "deletePet"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "api_key"
-        in: "header"
-        required: false
-        type: "string"
-      - name: "petId"
-        in: "path"
-        description: "Pet id to delete"
-        required: true
-        type: "integer"
-        format: "int64"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      responses:
-        "400":
-          description: "Invalid ID supplied"
-        "404":
-          description: "Pet not found"
-      x-swagger-router-controller: "Pet"
-  /pet/{petId}/uploadImage:
-    post:
-      tags:
-      - "pet"
-      summary: "uploads an image"
-      description: ""
-      operationId: "uploadFile"
-      consumes:
-      - "multipart/form-data"
-      produces:
-      - "application/json"
-      parameters:
-      - name: "petId"
-        in: "path"
-        description: "ID of pet to update"
-        required: true
-        type: "integer"
-        format: "int64"
-      - name: "additionalMetadata"
-        in: "formData"
-        description: "Additional data to pass to server"
-        required: false
-        type: "string"
-      - name: "file"
-        in: "formData"
-        description: "file to upload"
-        required: false
-        type: "file"
-      security:
-      - petstore_auth:
-        - "write:pets"
-        - "read:pets"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/ApiResponse"
-      x-swagger-router-controller: "Pet"
-  /store/inventory:
-    get:
-      tags:
-      - "store"
-      summary: "Returns pet inventories by status"
-      description: "Returns a map of status codes to quantities"
-      operationId: "getInventory"
-      produces:
-      - "application/json"
-      parameters: []
-      security:
-      - api_key: []
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            type: "object"
-            additionalProperties:
-              type: "integer"
-              format: "int32"
-      x-swagger-router-controller: "Store"
-  /store/order:
-    post:
-      tags:
-      - "store"
-      summary: "Place an order for a pet"
+      - "auth"
+      summary: "Creates a new family member"
       description: ""
       operationId: "placeOrder"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - in: "body"
         name: "body"
-        description: "order placed for purchasing the pet"
+        description: "order placed for purchasing the todoList"
         required: true
         schema:
           $ref: "#/definitions/Order"
@@ -336,27 +43,22 @@ paths:
             $ref: "#/definitions/Order"
         "400":
           description: "Invalid Order"
-      x-swagger-router-controller: "Store"
-  /store/order/{orderId}:
-    get:
+  /auth/login:
+    post:
       tags:
-      - "store"
-      summary: "Find purchase order by ID"
-      description: "For valid response try integer IDs with value >= 1 and <= 10.\
-        \         Other values will generated exceptions"
+      - "auth"
+      summary: "Logs in family member"
+      description: "For valid response try integer IDs with value >= 1 and <= 10.         Other values will generated exceptions"
       operationId: "getOrderById"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of pet that needs to be fetched"
+      - in: "body"
+        name: "body"
+        description: "todoList object that needs to be added to the auth"
         required: true
-        type: "integer"
-        maximum: 10
-        minimum: 1
-        format: "int64"
+        schema:
+          $ref: "#/definitions/todoList"
       responses:
         "200":
           description: "successful operation"
@@ -366,233 +68,165 @@ paths:
           description: "Invalid ID supplied"
         "404":
           description: "Order not found"
-      x-swagger-router-controller: "Store"
-    delete:
+  /todoList/todos:
+    get:
       tags:
-      - "store"
-      summary: "Delete purchase order by ID"
-      description: "For valid response try integer IDs with positive integer value.\
-        \         Negative or non-integer values will generate API errors"
-      operationId: "deleteOrder"
+      - "todoList"
+      summary: "Gets all todos"
+      description: "Multiple status values can be provided with comma separated strings"
+      operationId: "findtodoListsByStatus"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
-      - name: "orderId"
-        in: "path"
-        description: "ID of the order that needs to be deleted"
+      - name: "status"
+        in: "query"
+        description: "Status values that need to be considered for filter"
         required: true
-        type: "integer"
-        minimum: 1
-        format: "int64"
+        type: "array"
+        items:
+          type: "string"
+          enum:
+          - "available"
+          - "pending"
+          - "sold"
+          default: "available"
+        collectionFormat: "multi"
+      responses:
+        "200":
+          description: "successful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/todoList"
+        "400":
+          description: "Invalid status value"
+      security:
+      - todoListauth_auth:
+        - "write:todoLists"
+        - "read:todoLists"
+  /todoList/todo:
+    post:
+      tags:
+      - "todoList"
+      summary: "Adds a new todo"
+      description: ""
+      operationId: "addtodoList"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "todoList object that needs to be added to the auth"
+        required: true
+        schema:
+          $ref: "#/definitions/todoList"
+      responses:
+        "405":
+          description: "Invalid input"
+      security:
+      - todoListauth_auth:
+        - "write:todoLists"
+        - "read:todoLists"
+  /todoList/todo/:todoId:
+    delete:
+      tags:
+      - "todoList"
+      summary: "Deletes a todo"
+      description: ""
+      operationId: "updatetodoList"
+      consumes:
+      - "application/json"
+      produces:
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "todoList object that needs to be added to the auth"
+        required: true
+        schema:
+          $ref: "#/definitions/todoList"
       responses:
         "400":
           description: "Invalid ID supplied"
         "404":
-          description: "Order not found"
-      x-swagger-router-controller: "Store"
-  /user:
-    post:
+          description: "todoList not found"
+        "405":
+          description: "Validation exception"
+      security:
+      - todoListauth_auth:
+        - "write:todoLists"
+        - "read:todoLists"
+  /family/members:
+    get:
       tags:
-      - "user"
-      summary: "Create user"
-      description: "This can only be done by the logged in user."
-      operationId: "createUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - in: "body"
-        name: "body"
-        description: "Created user object"
-        required: true
-        schema:
-          $ref: "#/definitions/User"
-      responses:
-        default:
-          description: "successful operation"
-      x-swagger-router-controller: "User"
-  /user/createWithArray:
-    post:
-      tags:
-      - "user"
-      summary: "Creates list of users with given input array"
+      - "family"
+      summary: "Gets all family members"
       description: ""
-      operationId: "createUsersWithArrayInput"
+      operationId: "createfamilysWithArrayInput"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - in: "body"
         name: "body"
-        description: "List of user object"
+        description: "List of family object"
         required: true
         schema:
           type: "array"
           items:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/family"
       responses:
         default:
           description: "successful operation"
-      x-swagger-router-controller: "User"
-  /user/createWithList:
-    post:
+  /family/member/:memberId:
+    get:
       tags:
-      - "user"
-      summary: "Creates list of users with given input array"
+      - "family"
+      summary: "Gets all family members"
       description: ""
-      operationId: "createUsersWithListInput"
+      operationId: "getFamilyMember"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
       - in: "body"
         name: "body"
-        description: "List of user object"
+        description: "List of family object"
         required: true
         schema:
           type: "array"
           items:
-            $ref: "#/definitions/User"
+            $ref: "#/definitions/family"
       responses:
         default:
           description: "successful operation"
-      x-swagger-router-controller: "User"
-  /user/login:
-    get:
+  /family/member:
+    post:
       tags:
-      - "user"
-      summary: "Logs user into the system"
-      description: ""
-      operationId: "loginUser"
+      - "family"
+      summary: "Creates a family member"
+      description: "This can only be done by the logged in family."
+      operationId: "createfamily"
       produces:
-      - "application/xml"
       - "application/json"
       parameters:
-      - name: "username"
-        in: "query"
-        description: "The user name for login"
-        required: true
-        type: "string"
-      - name: "password"
-        in: "query"
-        description: "The password for login in clear text"
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-          headers:
-            X-Rate-Limit:
-              type: "integer"
-              format: "int32"
-              description: "calls per hour allowed by the user"
-            X-Expires-After:
-              type: "string"
-              format: "date-time"
-              description: "date in UTC when token expires"
-          schema:
-            type: "string"
-        "400":
-          description: "Invalid username/password supplied"
-      x-swagger-router-controller: "User"
-  /user/logout:
-    get:
-      tags:
-      - "user"
-      summary: "Logs out current logged in user session"
-      description: ""
-      operationId: "logoutUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters: []
-      responses:
-        default:
-          description: "successful operation"
-      x-swagger-router-controller: "User"
-  /user/{username}:
-    get:
-      tags:
-      - "user"
-      summary: "Get user by user name"
-      description: ""
-      operationId: "getUserByName"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be fetched. Use user1 for testing. "
-        required: true
-        type: "string"
-      responses:
-        "200":
-          description: "successful operation"
-          schema:
-            $ref: "#/definitions/User"
-        "400":
-          description: "Invalid username supplied"
-        "404":
-          description: "User not found"
-      x-swagger-router-controller: "User"
-    put:
-      tags:
-      - "user"
-      summary: "Updated user"
-      description: "This can only be done by the logged in user."
-      operationId: "updateUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "name that need to be updated"
-        required: true
-        type: "string"
       - in: "body"
         name: "body"
-        description: "Updated user object"
+        description: "Created family object"
         required: true
         schema:
-          $ref: "#/definitions/User"
+          $ref: "#/definitions/family"
       responses:
-        "400":
-          description: "Invalid user supplied"
-        "404":
-          description: "User not found"
-      x-swagger-router-controller: "User"
-    delete:
-      tags:
-      - "user"
-      summary: "Delete user"
-      description: "This can only be done by the logged in user."
-      operationId: "deleteUser"
-      produces:
-      - "application/xml"
-      - "application/json"
-      parameters:
-      - name: "username"
-        in: "path"
-        description: "The name that needs to be deleted"
-        required: true
-        type: "string"
-      responses:
-        "400":
-          description: "Invalid username supplied"
-        "404":
-          description: "User not found"
-      x-swagger-router-controller: "User"
+        default:
+          description: "successful operation"
 securityDefinitions:
-  petstore_auth:
+  todoListauth_auth:
     type: "oauth2"
-    authorizationUrl: "http://petstore.swagger.io/oauth/dialog"
+    authorizationUrl: "http://todoListauth.swagger.io/oauth/dialog"
     flow: "implicit"
     scopes:
-      write:pets: "modify pets in your account"
-      read:pets: "read your pets"
+      write:todoLists: "modify todoLists in your account"
+      read:todoLists: "read your todoLists"
   api_key:
     type: "apiKey"
     name: "api_key"
@@ -604,7 +238,7 @@ definitions:
       id:
         type: "integer"
         format: "int64"
-      petId:
+      todoListId:
         type: "integer"
         format: "int64"
       quantity:
@@ -625,13 +259,6 @@ definitions:
         default: false
     xml:
       name: "Order"
-    example:
-      petId: 6
-      quantity: 1
-      id: 0
-      shipDate: "2000-01-23T04:56:07.000+00:00"
-      complete: false
-      status: "placed"
   Category:
     type: "object"
     properties:
@@ -642,16 +269,13 @@ definitions:
         type: "string"
     xml:
       name: "Category"
-    example:
-      name: "name"
-      id: 6
-  User:
+  family:
     type: "object"
     properties:
       id:
         type: "integer"
         format: "int64"
-      username:
+      familyname:
         type: "string"
       firstName:
         type: "string"
@@ -663,21 +287,12 @@ definitions:
         type: "string"
       phone:
         type: "string"
-      userStatus:
+      familyStatus:
         type: "integer"
         format: "int32"
-        description: "User Status"
+        description: "family Status"
     xml:
-      name: "User"
-    example:
-      firstName: "firstName"
-      lastName: "lastName"
-      password: "password"
-      userStatus: 6
-      phone: "phone"
-      id: 0
-      email: "email"
-      username: "username"
+      name: "family"
   Tag:
     type: "object"
     properties:
@@ -688,10 +303,7 @@ definitions:
         type: "string"
     xml:
       name: "Tag"
-    example:
-      name: "name"
-      id: 1
-  Pet:
+  todoList:
     type: "object"
     required:
     - "name"
@@ -721,42 +333,10 @@ definitions:
           $ref: "#/definitions/Tag"
       status:
         type: "string"
-        description: "pet status in the store"
+        description: "todoList status in the auth"
         enum:
         - "available"
         - "pending"
         - "sold"
     xml:
-      name: "Pet"
-    example:
-      photoUrls:
-      - "photoUrls"
-      - "photoUrls"
-      name: "doggie"
-      id: 0
-      category:
-        name: "name"
-        id: 6
-      tags:
-      - name: "name"
-        id: 1
-      - name: "name"
-        id: 1
-      status: "available"
-  ApiResponse:
-    type: "object"
-    properties:
-      code:
-        type: "integer"
-        format: "int32"
-      type:
-        type: "string"
-      message:
-        type: "string"
-    example:
-      code: 0
-      type: "type"
-      message: "message"
-externalDocs:
-  description: "Find out more about Swagger"
-  url: "http://swagger.io"
+      name: "todoList"
