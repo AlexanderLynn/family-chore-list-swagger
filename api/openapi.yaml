@@ -30,6 +30,8 @@ paths:
         "400":
           description: Invalid parameters
           content: {}
+      security:
+      - bearerAuth: []
       x-codegen-request-body-name: body
       x-swagger-router-controller: Auth
   /auth/signup:
