@@ -11,18 +11,33 @@ servers:
 - url: http://family-chore-list.herokuapp.com/
 tags:
 - name: auth
-  description: Access to API Endpoints
+  description: Authorizaiton and User Management
 - name: todoList
   description: Everything about your Todo Lists
 - name: family
   description: Access Family Members
 paths:
+  /auth/users:
+    get:
+      tags:
+      - auth
+      summary: Gets all users
+      operationId: getUsers
+      responses:
+        "200":
+          description: successful operation
+          content: {}
+        "400":
+          description: Invalid parameters
+          content: {}
+      x-codegen-request-body-name: body
+      x-swagger-router-controller: Auth
   /auth/signup:
     put:
       tags:
       - auth
       summary: Creates a new user login
-      operationId: placeOrder
+      operationId: signup
       requestBody:
         content:
           application/json:
@@ -44,7 +59,7 @@ paths:
       - auth
       summary: Logs in family member
       description: Returns a token used for other api requests
-      operationId: getOrderById
+      operationId: login
       requestBody:
         description: Logs in user
         content:
@@ -61,13 +76,41 @@ paths:
           content: {}
       x-codegen-request-body-name: body
       x-swagger-router-controller: Auth
+  /auth/users/{userId}:
+    delete:
+      tags:
+      - auth
+      summary: Deletes a user
+      operationId: deleteUser
+      parameters:
+      - name: userId
+        in: path
+        description: ID of user to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid ID supplied
+          content: {}
+        "404":
+          description: User not found
+          content: {}
+        "405":
+          description: Validation exception
+          content: {}
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Auth
   /todoList/todos:
     get:
       tags:
       - todoList
       summary: Gets all todos
       description: Gets all todos
-      operationId: findtodoListsByStatus
+      operationId: getTodos
       responses:
         "200":
           description: successful operation
@@ -83,7 +126,7 @@ paths:
       tags:
       - todoList
       summary: Adds a new todo
-      operationId: addtodoList
+      operationId: addTodo
       requestBody:
         description: Created family object
         content:
@@ -104,7 +147,7 @@ paths:
       tags:
       - todoList
       summary: Deletes a todo
-      operationId: updatetodoList
+      operationId: deleteTodo
       parameters:
       - name: todoId
         in: path
@@ -132,7 +175,7 @@ paths:
       tags:
       - family
       summary: Gets all family members
-      operationId: createfamilysWithArrayInput
+      operationId: getFamilyMembers
       responses:
         default:
           description: successful operation
@@ -162,13 +205,40 @@ paths:
       security:
       - bearerAuth: []
       x-swagger-router-controller: Family
+    delete:
+      tags:
+      - family
+      summary: Deletes a family member
+      operationId: deleteFamilyMember
+      parameters:
+      - name: memberId
+        in: path
+        description: ID of family member to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid ID supplied
+          content: {}
+        "404":
+          description: Family member not found
+          content: {}
+        "405":
+          description: Validation exception
+          content: {}
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Family
   /family/member:
     post:
       tags:
       - family
       summary: Creates a family member
       description: This can only be done by the logged in family.
-      operationId: createfamily
+      operationId: createFamilyMember
       requestBody:
         description: Created family object
         content:
