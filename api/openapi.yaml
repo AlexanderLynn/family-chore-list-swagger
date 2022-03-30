@@ -1,0 +1,230 @@
+openapi: 3.0.1
+info:
+  title: Family Chore List Api Docs
+  description: Basic documentation for the Family Chore List REST api endpoints
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+- url: https://family-chore-list.herokuapp.com/
+- url: http://family-chore-list.herokuapp.com/
+tags:
+- name: auth
+  description: Access to API Endpoints
+- name: todoList
+  description: Everything about your Todo Lists
+- name: family
+  description: Access Family Members
+paths:
+  /auth/signup:
+    put:
+      tags:
+      - auth
+      summary: Creates a new user login
+      operationId: placeOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/signup'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content: {}
+        "400":
+          description: Invalid parameters
+          content: {}
+      x-codegen-request-body-name: body
+      x-swagger-router-controller: Auth
+  /auth/login:
+    post:
+      tags:
+      - auth
+      summary: Logs in family member
+      description: Returns a token used for other api requests
+      operationId: getOrderById
+      requestBody:
+        description: Logs in user
+        content:
+          'application/json':
+            schema:
+              $ref: '#/components/schemas/login'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content: {}
+        "400":
+          description: User not found
+          content: {}
+      x-codegen-request-body-name: body
+      x-swagger-router-controller: Auth
+  /todoList/todos:
+    get:
+      tags:
+      - todoList
+      summary: Gets all todos
+      description: Gets all todos
+      operationId: findtodoListsByStatus
+      responses:
+        "200":
+          description: successful operation
+          content: {}
+        "400":
+          description: Not authorized
+          content: {}
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: TodoList
+  /todoList/todo:
+    post:
+      tags:
+      - todoList
+      summary: Adds a new todo
+      operationId: addtodoList
+      requestBody:
+        description: Created family object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content: {}
+      security:
+      - bearerAuth: []
+      x-codegen-request-body-name: body
+      x-swagger-router-controller: TodoList
+  /todoList/todo/{todoId}:
+    delete:
+      tags:
+      - todoList
+      summary: Deletes a todo
+      operationId: updatetodoList
+      parameters:
+      - name: todoId
+        in: path
+        description: ID of todo to delete
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "400":
+          description: Invalid ID supplied
+          content: {}
+        "404":
+          description: Todo not found
+          content: {}
+        "405":
+          description: Validation exception
+          content: {}
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: TodoList
+  /family/members:
+    get:
+      tags:
+      - family
+      summary: Gets all family members
+      operationId: createfamilysWithArrayInput
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Family
+  /family/member/{memberId}:
+    get:
+      tags:
+      - family
+      summary: Gets all family members
+      operationId: getFamilyMember
+      parameters:
+      - name: memberId
+        in: path
+        description: ID of member to return
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      security:
+      - bearerAuth: []
+      x-swagger-router-controller: Family
+  /family/member:
+    post:
+      tags:
+      - family
+      summary: Creates a family member
+      description: This can only be done by the logged in family.
+      operationId: createfamily
+      requestBody:
+        description: Created family object
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/family'
+        required: true
+      responses:
+        default:
+          description: successful operation
+          content: {}
+      security:
+      - bearerAuth: []
+      x-codegen-request-body-name: body
+      x-swagger-router-controller: Family
+components:
+  schemas:
+    signup:
+      type: object
+      properties:
+        email:
+          type: string
+          example: test123@test.com
+        name:
+          type: string
+          example: Test Tester
+        password:
+          type: string
+          example: "123456"
+    family:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Alexander Lynn
+    task:
+      type: object
+      properties:
+        task:
+          type: string
+          example: Take the dog for a walk
+    login:
+      required:
+      - email
+      - password
+      type: object
+      properties:
+        email:
+          type: string
+          example: test@test.com
+        password:
+          type: string
+          example: "123456"
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: POST to /auth/login to gain the user token, then input the token here

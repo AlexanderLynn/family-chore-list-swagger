@@ -1,11 +1,11 @@
 {
-  "name": "family-chore-list-swagger",
+  "name": "family-chore-list-api-docs",
   "version": "1.0.0",
-  "description": "Sample Swagger docs for the CSE 341 node assignment",
+  "description": "Basic documentation for the Family Chore List REST api endpoints",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install",
-    "start": "node index.js"
+	"prestart": "npm install",
+	"start": "node index.js"
   },
   "keywords": [
     "swagger"
@@ -15,6 +15,6 @@
   "dependencies": {
     "connect": "^3.2.0",
     "js-yaml": "^3.3.0",
-    "swagger-tools": "^0.10.4"
+    "oas3-tools": "^2.2.3"
   }
 }
