@@ -130,28 +130,6 @@ paths:
       security:
       - bearerAuth: []
       x-swagger-router-controller: TodoList
-  /todoList/todo:
-    post:
-      tags:
-      - todoList
-      summary: Adds a new todo
-      operationId: addTodo
-      requestBody:
-        description: Created family object
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/task'
-        required: true
-      responses:
-        "200":
-          description: successful operation
-          content: {}
-      security:
-      - bearerAuth: []
-      x-codegen-request-body-name: body
-      x-swagger-router-controller: TodoList
-  /todoList/todo/{todoId}:
     delete:
       tags:
       - todoList
@@ -178,6 +156,27 @@ paths:
           content: {}
       security:
       - bearerAuth: []
+      x-swagger-router-controller: TodoList
+  /todoList/todo:
+    post:
+      tags:
+      - todoList
+      summary: Adds a new todo
+      operationId: addTodo
+      requestBody:
+        description: Created family object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/task'
+        required: true
+      responses:
+        "200":
+          description: successful operation
+          content: {}
+      security:
+      - bearerAuth: []
+      x-codegen-request-body-name: body
       x-swagger-router-controller: TodoList
   /family/members:
     get:
