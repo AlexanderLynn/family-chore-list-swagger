@@ -195,7 +195,7 @@ paths:
     get:
       tags:
       - family
-      summary: Gets all family members
+      summary: Gets a family member
       operationId: getFamilyMember
       parameters:
       - name: memberId
