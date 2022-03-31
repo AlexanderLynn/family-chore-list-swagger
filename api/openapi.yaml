@@ -327,9 +327,9 @@ components:
     updateTask:
       type: object
       properties:
-        task:
-          type: string
-          example: Take the dog for a walk 2.0
+        completed:
+          type: boolean
+          example: True
     login:
       required:
       - email
