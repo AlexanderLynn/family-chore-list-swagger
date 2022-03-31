@@ -286,7 +286,7 @@ paths:
       requestBody:
         description: Created family object
         content:
-          '*/*':
+          'application/json':
             schema:
               $ref: '#/components/schemas/family'
         required: true
